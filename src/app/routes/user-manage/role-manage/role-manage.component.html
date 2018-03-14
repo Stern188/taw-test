@@ -1,0 +1,145 @@
+<pro-header>
+    <ng-template #breadcrumb>
+        <nz-breadcrumb>
+            <nz-breadcrumb-item>
+                <a [routerLink]="['/']">首页</a>
+            </nz-breadcrumb-item>
+            <nz-breadcrumb-item>
+                用户管理
+            </nz-breadcrumb-item>
+            <nz-breadcrumb-item>角色管理</nz-breadcrumb-item>
+        </nz-breadcrumb>
+    </ng-template>
+</pro-header>
+<nz-card [nzBordered]="false">
+    <div class="mb-md">
+        <button nz-button (click)="befAddRole()" [nzType]="'primary'" [nzSize]="'large'">
+            <i class="anticon anticon-plus"></i>
+            <span>添加</span>
+        </button>
+    </div>
+    <nz-table #nzTable [nzDataSource]="rolesData" [nzPageSize]="5" nzShowSizeChanger nzShowQuickJumper nzShowTotal>
+        <span nz-table-title>Here is Title</span>
+        <thead nz-thead>
+            <tr>
+                <th nz-th>
+                    <span>角色名称</span>
+                    <nz-table-sort [(nzValue)]="sortMap.name" (nzValueChange)="sort('name',$event)"></nz-table-sort>
+                    <nz-dropdown [nzTrigger]="'click'" [nzClickHide]="false">
+                        <i class="anticon anticon-filter" nz-dropdown title="筛选"></i>
+                        <div nz-dropdown-custom class="custom-filter-dropdown">
+                            <nz-input [(ngModel)]="nameVal"></nz-input>
+                            <button nz-button [nzType]="'primary'" (click)="search()">搜索</button>
+                        </div>
+                    </nz-dropdown>
+                </th>
+                <th nz-th>
+                    <span>描述</span>
+                    <nz-table-sort [(nzValue)]="sortMap.description" (nzValueChange)="sort('description',$event)"></nz-table-sort>
+                    <nz-dropdown [nzTrigger]="'click'" [nzClickHide]="false">
+                        <i class="anticon anticon-filter" nz-dropdown title="筛选"></i>
+                        <div nz-dropdown-custom class="custom-filter-dropdown">
+                            <nz-input [(ngModel)]="descriptionVal"></nz-input>
+                            <button nz-button [nzType]="'primary'" (click)="search()">搜索</button>
+                        </div>
+                    </nz-dropdown>
+                </th>
+                <th nz-th>
+                    <span>操作</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                <td nz-td>
+                    {{data.name}}
+                </td>
+                <td nz-td>{{data.description}}</td>
+                <td nz-td>
+                    <span>
+                        <a href="javascript:;" (click)="roleDet(data)">详情</a>
+                        <span nz-table-divider></span>
+                        <a href="javascript:;" (click)="befEditRole(data)">编辑</a>
+                        <span nz-table-divider></span>
+                        <nz-popconfirm [nzTitle]="'确定删除？'" [nzOkText]="'确定'" [nzCancelText]="'取消'" (nzOnConfirm)="delRole()">
+                            <a nz-popconfirm>删除</a>
+                        </nz-popconfirm>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</nz-card>
+
+<nz-modal [nzVisible]="modalVisible" [nzStyle]="style" [nzFooter]="isFooter" [nzTitle]="addOrUpldRoleTitle" [nzConfirmLoading]="loading"
+    [nzContent]="modalContent" (nzOnCancel)="modalVisible=false" (nzOnOk)="addOrUplRole()">
+    <ng-template #modalContent>
+        <form nz-form>
+            <div nz-form-item class="d-flex" *ngIf="isShow">
+                <div nz-form-label nz-col [nzSpan]="5">
+                    <label for="name" nz-form-item-required>角色名称</label>
+                </div>
+                <div nz-form-control class="flex-1">
+                    <nz-input [nzDisabled]="isRolenameDisabled" [(ngModel)]="role.name" name="name" [nzSize]="'large'" [nzPlaceHolder]="''" nzId="name"></nz-input>
+                </div>
+            </div>
+            <div nz-form-item class="d-flex" *ngIf="isShow">
+                <div nz-form-label nz-col [nzSpan]="5">
+                    <label for="description">描述</label>
+                </div>
+                <div nz-form-control class="flex-1">
+                    <nz-input [(ngModel)]="role.description" name="description" [nzSize]="'large'" [nzPlaceHolder]="''" nzId="description"></nz-input>
+                </div>
+            </div>
+            <nz-tabset>
+                <nz-tab>
+                    <ng-template #nzTabHeading>
+                        功能模块
+                    </ng-template>
+                    <div nz-form-item class="d-flex" *ngIf="isShow">
+                        <div nz-form-label nz-col [nzSpan]="5">
+                            <label for="isSelect">是否全选</label>
+                        </div>
+                        <div nz-form-control class="flex-1">
+                            <nz-select [nzPlaceHolder]="''" id="isSelect" name="isSelect" (nzOpenChange)="isSelectChg($event)" [(ngModel)]="role.isSelect">
+                                <nz-option *ngFor="let option of rootOptions" [nzLabel]="option.label" [nzValue]="option.value">
+                                </nz-option>
+                            </nz-select>
+                        </div>
+                    </div>
+                    <div nz-form-item class="d-flex">
+                        <nz-table #rootTable id="privilegeTbl" [nzDataSource]="rootData" [nzSize]="'small'" nzIsPagination="false">
+                            <span nz-table-title>Here is Title</span>
+                            <thead nz-thead>
+                                <tr>
+                                    <th nz-th style="width:400px;">
+                                        <span>功能模块名</span>
+                                    </th>
+                                    <th nz-th style="width:100px;">
+                                        <span>只读</span>
+                                    </th>
+                                    <th nz-th style="width:100px;">
+                                        <span>读写</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody nz-tbody>
+                                <tr nz-tbody-tr *ngFor="let data of rootTable.data">
+                                    <td nz-td>
+                                        {{data.module_name}}
+                                    </td>
+                                    <td nz-td>
+                                        <input type="checkbox" value="r" [attr.priId]="data.module_id" [disabled]="isChkDisabled" (change)="chgRdo('rw',data.module_id)">
+                                    </td>
+                                    <td nz-td>
+                                        <input type="checkbox" value="rw" [attr.priId]="data.module_id" [disabled]="isChkDisabled" (change)="chgRdo('r',data.module_id)">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </nz-tab>
+            </nz-tabset>
+        </form>
+    </ng-template>
+</nz-modal>

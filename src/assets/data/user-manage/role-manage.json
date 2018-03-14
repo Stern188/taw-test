@@ -1,0 +1,22 @@
+[
+    {
+        "name": "超级管理员",
+        "description": "超级管理员权限"
+    },
+    {
+        "name": "只读管理员",
+        "description": "只读管理员权限"
+    },
+    {
+        "name": "系统管理员",
+        "description": "系统管理员权限"
+    },
+    {
+        "name": "普通管理员",
+        "description": "普通管理员权限"
+    },
+    {
+        "name": "无权限管理员",
+        "description": "无权限管理员权限"
+    }
+]

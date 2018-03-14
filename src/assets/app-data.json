@@ -1,0 +1,82 @@
+{
+    "app": {
+        "name": "Alain",
+        "description": "Ng-zorro admin panel front-end framework"
+    },
+    "user": {
+        "name": "Admin",
+        "avatar": "./assets/img/zorro.svg",
+        "email": "cipchk@qq.com"
+    },
+    "menu": [
+        {
+            "group": false,
+            "children": [
+                {
+                    "text": "用户管理",
+                    "i18n": "menu.user-manage",
+                    "link": "/user-manage",
+                    "icon": "icon-user",
+                    "children": [
+                        {
+                            "text": "添加用户",
+                            "i18n": "menu.user-add",
+                            "link": "/user-manage/members"
+                        },
+                        {
+                            "text": "角色管理",
+                            "i18n": "menu.role-manage",
+                            "link": "/user-manage/role-mange"
+                        },
+                        {
+                            "text": "密码重置",
+                            "i18n": "menu.pwd-manage",
+                            "link": "/user-manage/personalsettings"
+                        }
+                    ]
+                },
+                {
+                    "text": "项目管理",
+                    "i18n": "menu.project-manage",
+                    "link": "",
+                    "icon": "anticon anticon-team",
+                    "children": [
+                        {
+                            "text": "项目管理",
+                            "i18n": "menu.project-manage",
+                            "link": "/project-manage/projects"
+                        },
+                        {
+                            "text": "版本管理",
+                            "i18n": "menu.version-manage",
+                            "link": "/project-manage/versions"
+                        },
+                        {
+                            "text": "模块管理",
+                            "i18n": "menu.module-manage",
+                            "link": "/project-manage/modules"
+                        }
+                    ]
+                },
+                {
+                    "text": "系统日志",
+                    "i18n": "menu.system-log",
+                    "link": "",
+                    "icon": "anticon anticon-file-text",
+                    "children": [
+                        {
+                            "text": "我的自测记录",
+                            "i18n": "menu.self-test-records",
+                            "link": "/system-log/self-test-records"
+                        },
+                        {
+                            "text": "操作日志",
+                            "i18n": "menu.operation-log",
+                            "link": "/system-log/operation-log"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
