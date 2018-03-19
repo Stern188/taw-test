@@ -19,6 +19,9 @@ import { CallbackComponent } from './callback/callback.component';
 import { Exception403Component } from './exception/403.component';
 import { Exception404Component } from './exception/404.component';
 import { Exception500Component } from './exception/500.component';
+//pages
+import { RoleManageComponent } from '../page/user-manage/role-manage/role-manage.component';
+import { MembersComponent } from '../page/user-manage/members/members.component';
 
 const routes: Routes = [
     {
@@ -43,8 +46,9 @@ const routes: Routes = [
             { path: 'logics', loadChildren: './logics/logics.module#LogicsModule' },
             { path: 'extras', loadChildren: './extras/extras.module#ExtrasModule' },
             { path: 'pro', loadChildren: './pro/pro.module#ProModule' },
-            { path: 'index', component: DashboardV1Component },
-            { path: 'user-manage', loadChildren: './user-manage/user-manage.module#UserManageModule' }
+            { path: 'index', component: MembersComponent },
+            { path: 'user-manage/role-mange', component: RoleManageComponent },
+            { path: 'user-manage/members', component: MembersComponent }
         ]
     },
     // 全屏布局

@@ -29,7 +29,6 @@ export class HeaderI18nComponent {
         public tsServ: I18NService,
         private titleServ: TitleService
     ) {
-        settings.layout.lang = this.tsServ.defaultLang;
         this.langs = this.tsServ.getLangs();
     }
 

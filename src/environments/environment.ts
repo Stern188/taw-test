@@ -5,10 +5,10 @@
 
 export const environment = {
     chore: false,
-    SERVER_URL: `./`,
-    // SERVER_URL: `http://192.168.18.89:4233/api/v1/`,
+    // SERVER_URL: `./`,
+    SERVER_URL: `http://192.168.18.89:4233/api/v1`,
     Login_url: `http://192.168.18.89:4233/auth/token-auth`,
-    production: false,
+    production: true,
     hmr: false,
-    useHash: false
+    useHash: true
 };

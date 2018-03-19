@@ -3,16 +3,16 @@ import { Component, OnDestroy, Inject, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd';
-import { /* SocialService, SocialOpenType, */ ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
+import { SocialService, SocialOpenType, ITokenService, DA_SERVICE_TOKEN } from '@delon/auth';
 import { ReuseTabService } from '@delon/abc';
 import { environment } from '@env/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'passport-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.less'],
-    providers: [/* SocialService */]
+    providers: [SocialService]
 })
 export class UserLoginComponent implements OnDestroy {
 
@@ -24,11 +24,11 @@ export class UserLoginComponent implements OnDestroy {
 
     constructor(
         fb: FormBuilder,
-        private HttpClient: HttpClient,
+        private http: HttpClient,
         private router: Router,
         public msg: NzMessageService,
         private settingsService: SettingsService,
-        // private socialService: SocialService,
+        private socialService: SocialService,
         @Optional() @Inject(ReuseTabService) private reuseTabService: ReuseTabService,
         @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService) {
         this.form = fb.group({
@@ -70,8 +70,9 @@ export class UserLoginComponent implements OnDestroy {
     // endregion
 
     submit() {
+        debugger;
         this.error = '';
-        /* if (this.type === 0) {
+        if (this.type === 0) {
             this.userName.markAsDirty();
             this.password.markAsDirty();
             if (this.userName.invalid || this.password.invalid) return;
@@ -79,17 +80,12 @@ export class UserLoginComponent implements OnDestroy {
             this.mobile.markAsDirty();
             this.captcha.markAsDirty();
             if (this.mobile.invalid || this.captcha.invalid) return;
-        } */
+        }
         // mock http
         this.loading = true;
-        this.HttpClient.post(`${environment.Login_url}`,
+        this.socialService.login(environment.Login_url, '/',
             {
-                /* name: this.userName.value,
-                password: this.password.value */
-                name: "admin",
-                password: "talent"
-            }, {
-                headers: new HttpHeaders().set('Content-Type', 'application/json')
+                type: 'window'
             })
             .subscribe(
                 authResult => {
@@ -97,23 +93,23 @@ export class UserLoginComponent implements OnDestroy {
                     // 清空路由复用信息
                     this.reuseTabService.clear();
                     this.tokenService.set({
-                        token: authResult['id_token'],
-                        name: "admin",//this.userName.value,
+                        token: '123456789',
+                        name: this.userName.value,
                         email: ``,
                         id: 10000,
-                        time: authResult['expires_in']
+                        time: +new Date
                     });
                     this.router.navigate(['/']);
                 },
                 err => {
-                    this.error = `用户名或密码错误`;
+                    this.error = `账户或密码错误`;
                 }
             );
     }
 
     // region: social
 
-    /* open(type: string, openType: SocialOpenType = 'href') {
+    open(type: string, openType: SocialOpenType = 'href') {
         let url = ``;
         let callback = ``;
         if (environment.production)
@@ -145,7 +141,7 @@ export class UserLoginComponent implements OnDestroy {
                 type: 'href'
             });
         }
-    } */
+    }
 
     // endregion
 

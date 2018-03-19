@@ -23,7 +23,7 @@ export class I18NService implements AlainI18NService {
     ) {
         const defaultLan = settings.layout.lang || translate.getBrowserLang();
         const lans = this._langs.map(item => item.code);
-        this._default = lans.includes(defaultLan + "-CN") ? defaultLan + "-CN" : lans[0];
+        this._default = lans.includes(defaultLan) ? defaultLan : lans[0];
         translate.addLangs(lans);
     }
 
@@ -31,7 +31,7 @@ export class I18NService implements AlainI18NService {
         lang = lang || this.translate.getDefaultLang();
         this.nzLocalService.setLocale(lang === 'en' ? enUS : zhCN);
         // need reload router because of ng-zorro-antd local system
-        if (!firstLoad) this.injector.get(Router).navigate(['/']);
+        if (!firstLoad) this.injector.get(Router).navigate([ '/' ]);
         return this.translate.use(lang);
     }
     /** 获取语言列表 */

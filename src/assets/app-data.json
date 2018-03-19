@@ -15,7 +15,7 @@
                 {
                     "text": "用户管理",
                     "i18n": "menu.user-manage",
-                    "link": "/user-manage",
+                    "link": "",
                     "icon": "icon-user",
                     "children": [
                         {

@@ -180,7 +180,7 @@ import { DelonMockModule } from '@delon/mock';
 import * as MOCKDATA from '../../_mock';
 import { environment } from '@env/environment';
 const MOCKMODULE = !environment.production || environment.chore === true ?
-    [DelonMockModule.forRoot({ data: MOCKDATA })] : [];
+                    [ DelonMockModule.forRoot({ data: MOCKDATA }) ] : [];
 
 // region: global config functions
 
@@ -206,15 +206,8 @@ const MOCKMODULE = !environment.production || environment.chore === true ?
         // auth
         AlainAuthModule.forRoot({
             // 受限于 https://github.com/cipchk/ng-alain/issues/246， 只支持字符串形式
-            store_key: '_token',
-            token_invalid_redirect: true,
-            token_exp_offset: 10,
-            token_send_key: 'token',
-            token_send_template: 'Bearer ${token}',
-            token_send_place: 'header',
-            login_url: `/passport/login`,
-            ignores: [/\/login/, /assets\//, /\/token-auth/],
-            allow_anonymous_key: `_allow_anonymous`
+            // ignores: [ `\\/login`, `assets\\/` ],
+            login_url: `/passport/login`
         }),
         // acl
         AlainACLModule.forRoot(),
@@ -225,17 +218,17 @@ const MOCKMODULE = !environment.production || environment.chore === true ?
     ]
 })
 export class DelonModule {
-    constructor(@Optional() @SkipSelf() parentModule: DelonModule) {
-        throwIfAlreadyLoaded(parentModule, 'DelonModule');
-    }
+  constructor( @Optional() @SkipSelf() parentModule: DelonModule) {
+    throwIfAlreadyLoaded(parentModule, 'DelonModule');
+  }
 
-    static forRoot(): ModuleWithProviders {
-        return {
-            ngModule: DelonModule,
-            providers: [
-                // TIPS：@delon/abc 有大量的全局配置信息，例如设置所有 `simple-table` 的页码默认为 `20` 行
-                // { provide: SimpleTableConfig, useFactory: simpleTableConfig }
-            ]
-        };
-    }
+  static forRoot(): ModuleWithProviders {
+      return {
+          ngModule: DelonModule,
+          providers: [
+              // TIPS：@delon/abc 有大量的全局配置信息，例如设置所有 `simple-table` 的页码默认为 `20` 行
+              // { provide: SimpleTableConfig, useFactory: simpleTableConfig }
+          ]
+      };
+  }
 }
